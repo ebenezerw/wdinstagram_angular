@@ -1,0 +1,6 @@
+
+<a data-ui-sref="entryNew">Create New Entry</a>
+
+<div data-ng-repeat="entry in vm.entries | orderBy: '-created_at' ">
+  <p><a data-ui-sref= "entryShow({id: entry.id})">{{entry.author}}</a></p>
+</div>
