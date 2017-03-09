@@ -26,6 +26,11 @@ angular
     "EntryFactory",
     "$stateParams",
     EntryShowControllerFunction
+  ])
+  .controller("EntryEditController", [
+    "EntryFactory",
+    "$stateParams",
+    EntryEditControllerFunction
   ]);
 
 
@@ -47,6 +52,12 @@ function RouterFunction($stateProvider){
     url: "/entries/:id",
     templateUrl: "js/ng-views/show.html",
     controller: "EntryShowController",
+    controllerAs: "vm"
+  })
+  .state("entryEdit", {
+    url: "/entries/:id/edit",
+    templateUrl: "js/ng-views/edit.html",
+    controller: "EntryEditController",
     controllerAs: "vm"
   });
 }
@@ -71,3 +82,17 @@ function EntryNewControllerFunction( EntryFactory, $state ) {
 function EntryShowControllerFunction(EntryFactory, $stateParams) {
   this.entry = EntryFactory.get({id: $stateParams.id});
 }
+
+function EntryEditControllerFunction(EntryFactory, $stateParams, $state){
+    this.entry = EntryFactory.get({id: $stateParams.id})
+    this.update = function(){
+      this.entry.$update({id: $stateParams.id}, function(entry){
+        $state.go("entryShow", {id: entry.id})
+      })
+    }
+      this.destroy = function(){
+        this.entry.$delete({id: $stateParams.id}, function(entry){
+          $state.go("entryIndex")
+      })
+  }
+  }
